@@ -1,0 +1,70 @@
+@import url(//fonts.googleapis.com/css?family=Raleway:100,300);
+@import url(//fonts.googleapis.com/css?family=Source+Code+Pro);
+
+body {
+  font-family: "Raleway", sans-serif;
+  font-weight: 300;
+  background: #fafafa;
+  text-align: center;
+}
+
+#content {
+  width: 40em;
+  margin: 0 auto;
+}
+
+label {
+  display: inline;
+  font-size: 3em;
+  margin: 10px;
+  font-weight: 100;
+  white-space: nowrap;
+}
+
+h1 {
+  border-radius: 5px;
+  background-color: #393;
+  padding: 0.25em 0.5em;
+}
+
+label {
+  display: inline-block;
+  width: 2.5em;
+}
+
+input {
+  font-size: 2em;
+  padding: 5px;
+  margin: 5px;
+  border: 0;
+  border-radius: 3px;
+  border-bottom: 3px solid #eee;
+  box-shadow: 0 0 10px #eee;
+  font-family: "Raleway", sans-serif;
+}
+
+button {
+  font-size: 2em;
+  font-weight: 300;
+  font-family: "Raleway", sans-serif;
+  border: 1px solid #ccc;
+  border-bottom-width: 3px;
+  background-color: #eee;
+  padding: 0.25em 0.5em;
+  border-radius: 5px;
+  margin: 1em;
+}
+
+#curl2sudo {
+  padding: 10px;
+  font-size: 1.4em;
+  width: 100%;
+  max-width: 800px;
+  word-wrap: break-word;
+  border-radius: 5px;
+  background-color: #333;
+  color: #fff;
+  margin: 0 auto;
+  font-family: "Source+Code+Pro", monospace;
+  font-size: 1em;
+}

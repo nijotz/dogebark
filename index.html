@@ -1,0 +1,35 @@
+<html>
+  <head>
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/sprintf/0.0.7/sprintf.min.js"></script>
+    <link type="text/css" href="css.css.css" rel="stylesheet">
+    <script>
+      $(function() {
+        $('button[name="curl2sudo"]').click(function(){
+          
+          // Construct abs. URL. Why not just make an <a>? IE.
+          var el= document.createElement('div');
+          el.innerHTML= '<a href="dogebark.sh">x</a>';
+          var url = el.firstChild.href;
+          
+          var dns = $('input[name="dns"]').val();
+          var ip = $('input[name="ip"]').val();
+          var curl2sudo = "curl %(url)s > /tmp/dogebark.sh; while ! nslookup %(dns)s | grep %(ip)s; do sleep 5; echo 'nope.'; done; while true; do bash /tmp/dogebark.sh; done"
+          curl2sudo = sprintf(curl2sudo, {'url': url, 'dns': dns, 'ip': ip})
+          $('#curl2sudo').html(curl2sudo);
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <div id="content">
+      <h1>Waiting for DNS to propogate? Get alerted with a doge bark.</h1>
+      <label for="ip">IP</label>
+      <input name="ip" type="text">
+      <label for="dns">DNS</label>
+      <input name="dns" type="text">
+      <button name="curl2sudo">curl2sudo</button>
+      <div id="curl2sudo">Fill out the form to get code you can run in your terminal without verifying its security.</div>
+    </div>
+  </body>
+</html>
