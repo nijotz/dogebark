@@ -2,16 +2,76 @@
   <head>
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/sprintf/0.0.7/sprintf.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/chosen/1.1.0/chosen.jquery.min.js"></script>
+    <link type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/chosen/1.1.0/chosen.min.css" rel="stylesheet">
+
     <link type="text/css" href="css.css.css" rel="stylesheet">
+
+    <script id="form-template" type="text/x-handlebars-template">
+      <h2>{{description}}</h2>
+      {{#each inputs}}
+      <div>
+         <label for="{{@key}}">{{this}}</label>
+         <input id="{{@key}}" name="{{@key}}" type="text">
+      </div>
+      {{/each}}
+      <button name="curl2sudo">curl2sudo</button>
+      <div id="curl2sudo">Fill out the form to get code you can run in your terminal without verifying its security.</div>
+      <div id="add-more">Add more alerts on <a href="https://github.com/nijotz/dogebark">Github</a></div>
+    </script>
+
     <script>
-      $(function() {
-        $('button[name="curl2sudo"]').click(function(){
-          
+      var alert_select;
+      var dogebark_alerts = {};
+      var alert_form;
+      var alert_form_template;
+
+      function dogebark_add(name, description, inputs, oneliner) {
+        alert_select.append($('<option></option>')
+            .attr("value", name)
+            .html(name));
+
+        dogebark_alerts[name] = {
+          'description': description,
+          'inputs': inputs,
+          'oneliner': oneliner,
+        }
+
+      }
+
+      function render_form(alert) {
+        var html = alert_form_template(alert);
+        alert_form.html(html);
+
+        $('button[name="curl2sudo"]').click(function() {
+          var context = {};
+          for (input in alert['inputs']) {
+            context[input] = alert_form.find('input[name="' + input + '"]').val();
+          }
+
           // Construct abs. URL. Why not just make an <a>? IE.
           var el= document.createElement('div');
           el.innerHTML= '<a href="dogebark.sh">x</a>';
           var url = el.firstChild.href;
-          
+          context['dogebark_url'] = url;
+
+          $('#curl2sudo').html(sprintf(alert['oneliner'], context));
+        })
+      }
+
+      $(function() {
+        alert_select.change(function() {
+          var alert = dogebark_alerts[alert_select.find('option:selected').val()];
+          render_form(alert);
+        });
+      })
+
+      /*
+      $(function() {
+        $('button[name="curl2sudo"]').click(function(){
+
+
           var dns = $('input[name="dns"]').val();
           var ip = $('input[name="ip"]').val();
           var curl2sudo = "curl %(url)s > /tmp/dogebark.sh; while ! nslookup %(dns)s | grep %(ip)s; do sleep 5; echo 'nope.'; done; while true; do bash /tmp/dogebark.sh; done"
@@ -19,17 +79,27 @@
           $('#curl2sudo').html(curl2sudo);
         });
       });
+      */
     </script>
   </head>
   <body>
     <div id="content">
-      <h1>Waiting for DNS to propogate? Get alerted with a doge bark.</h1>
-      <label for="ip">IP</label>
-      <input name="ip" type="text">
-      <label for="dns">DNS</label>
-      <input name="dns" type="text">
-      <button name="curl2sudo">curl2sudo</button>
-      <div id="curl2sudo">Fill out the form to get code you can run in your terminal without verifying its security.</div>
+      <h1>DOGEBARK ALERTS</h1>
+      <select id="alert-type" data-placeholder="Choose an alert type...">
+        <option value=""></option>
+      </select>
+      <form id="alert-form" action="javascript:void(0);">
+      </form>
     </div>
+    <script>
+      alert_select = $('#alert-type');
+      alert_form = $('#alert-form');
+      alert_form_template = Handlebars.compile($('#form-template').html());
+    </script>
+    <script src="download.js"></script>
+    <script src="dnsprop.js"></script>
+    <script>
+      $('#alert-type').chosen({disable_search_threshold: 10});
+    </script>
   </body>
 </html>
