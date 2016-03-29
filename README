@@ -1,0 +1,2 @@
+For use in nijotz.com. To make standalone, run:
+`sed 's/{%.*%}//' index_template.html > index.html`

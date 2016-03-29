@@ -1,5 +1,6 @@
 <html>
   <head>
+    {% block extra_head %}
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/sprintf/0.0.7/sprintf.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.min.js"></script>
@@ -81,8 +82,10 @@
       });
       */
     </script>
+    {% endblock %}
   </head>
   <body>
+    {% block content %}
     <div id="content">
       <h1>DOGEBARK ALERTS</h1>
       <select id="alert-type" data-placeholder="Choose an alert type...">
@@ -101,5 +104,6 @@
     <script>
       $('#alert-type').chosen({disable_search_threshold: 10});
     </script>
+    {% endblock %}
   </body>
 </html>
