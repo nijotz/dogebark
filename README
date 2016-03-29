@@ -1,2 +1,3 @@
 For use in nijotz.com. To make standalone, run:
-`sed 's/{%.*%}//' index_template.html > index.html`
+`pip install j2cli`
+`j2 index_template.html > index.html`
