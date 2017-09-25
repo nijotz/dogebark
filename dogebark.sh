@@ -41,13 +41,18 @@ function play_sound {
     sound_var=sound_$clip
     wav=${!sound_var}
 
+    case $(uname) in
+        [Dd]arwin) base='base64 -D';;
+        *) base='base64 -d';;
+    esac
+
     if [ -z "$wav" ]; then
         echo "Could not find sound clip \"$clip\""
         exit 1
     fi
 
     v Playing $clip
-    echo "$wav" | base64 -d > /tmp/dogbark.wav
+    echo "$wav" | $base > /tmp/dogbark.wav
     eval "$program /tmp/dogbark.wav"
     rm /tmp/dogbark.wav
 }
